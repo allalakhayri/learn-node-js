@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 
 // express app
 const app = express();
@@ -8,7 +9,30 @@ app.listen(3000);
 
 // register view engine
 app.set('view engine', 'ejs');
-// app.set('views', 'myviews');
+
+// middleware & static files
+// you choose the folder (public) in which files are public and can be accessed from the browser
+app.use(express.static('public'));
+
+app.use((req, res, next) => {
+  console.log('new request made:');
+  console.log('host: ', req.hostname);
+  console.log('path: ', req.path);
+  console.log('method: ', req.method);
+  next(); // gives the hand to the next middleware to perform and not blocking it ! 
+});
+
+app.use((req, res, next) => {
+  console.log('in the next middleware');
+  next();
+});
+
+app.use(morgan('dev')); // return a log fomrat in the console !
+
+app.use((req, res, next) => {
+  res.locals.path = req.path;
+  next();
+});
 
 app.get('/', (req, res) => {
   const blogs = [
@@ -16,7 +40,7 @@ app.get('/', (req, res) => {
     {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
     {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
   ];
-  res.render('index', { title: 'Home', blogs }); // passing data to the ejs ( view engine ) to be displayed 
+  res.render('index', { title: 'Home', blogs });
 });
 
 app.get('/about', (req, res) => {
