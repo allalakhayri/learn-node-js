@@ -1,0 +1,26 @@
+{
+  "name": "ninja",
+  "version": "1.0.0",
+  "description": "",
+  "main": "files.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allalakhayri/learn-node-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allalakhayri/learn-node-js/issues"
+  },
+  "homepage": "https://github.com/allalakhayri/learn-node-js#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
