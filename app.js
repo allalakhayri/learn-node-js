@@ -1,24 +1,33 @@
-const express=require('express')
-const app = express() ; 
+const express = require('express');
 
-app.listen(3000); // returns an instance of server 
+// express app
+const app = express();
 
-app.get('/', function(req, res) {
+// listen for requests
+app.listen(3000);
 
-    //res.send('<p>Hello express </p>', 200); // sets automatically the type of response (html , text ..) 
-    res.sendFile('./views/index.html', {root:__dirname}) // it looks for absolute path not relative 
+// register view engine
+app.set('view engine', 'ejs');
+// app.set('views', 'myviews');
+
+app.get('/', (req, res) => {
+  const blogs = [
+    {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+  ];
+  res.render('index', { title: 'Home', blogs }); // passing data to the ejs ( view engine ) to be displayed 
 });
-app.get('/about', function(req, res) {
 
-    res.sendFile('./views/about.html', {root:__dirname}) 
-    
+app.get('/about', (req, res) => {
+  res.render('about', { title: 'About' });
 });
-//redirection
-app.get('about-us',(req, res)=> {  
-    res.redirect('/about'); 
-})
 
-//404 pages 
-app.use((req, res)=>{ //it fires for every request !! so it must be in the bottom !!! 
-    res.status(404).sendFile('./views/404.html', {root:__dirname})
-})
+app.get('/blogs/create', (req, res) => {
+  res.render('create', { title: 'Create a new blog' });
+});
+
+// 404 page
+app.use((req, res) => {
+  res.status(404).render('404', { title: '404' });
+});
